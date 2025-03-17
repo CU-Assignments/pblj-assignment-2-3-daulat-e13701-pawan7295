@@ -1,0 +1,72 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class ProductProcessor {
+    public static void main(String[] args) {
+        List<Product> productList = Arrays.asList(
+            new Product("MacBook Pro", "Electronics", 120000),
+            new Product("Samsung Galaxy S23", "Electronics", 80000),
+            new Product("Sony WH-1000XM5", "Electronics", 25000),
+            new Product("LG Smart TV", "Electronics", 60000),
+            new Product("Dyson Air Purifier", "Appliances", 45000),
+            new Product("Bosch Dishwasher", "Appliances", 55000),
+            new Product("Instant Pot", "Appliances", 15000),
+            new Product("IKEA Office Chair", "Furniture", 12000),
+            new Product("Solid Wood Dining Table", "Furniture", 35000),
+            new Product("King Size Bed", "Furniture", 50000)
+        );
+
+        // 1️⃣ Grouping products by category
+        Map<String, List<Product>> productsByCategory = productList.stream()
+                .collect(Collectors.groupingBy(Product::getCategory));
+
+        // 2️⃣ Finding the most expensive product in each category
+        Map<String, Product> mostExpensiveProduct = productList.stream()
+                .collect(Collectors.toMap(
+                        Product::getCategory,
+                        p -> p,
+                        (p1, p2) -> p1.getPrice() > p2.getPrice() ? p1 : p2
+                ));
+
+        // 3️⃣ Calculating the average price of all products
+        double avgPrice = productList.stream()
+                .mapToDouble(Product::getPrice)
+                .average()
+                .orElse(0.0);
+
+        // Output results
+        System.out.println("Grouped Products by Category:");
+        productsByCategory.forEach((category, products) -> {
+            System.out.println(category + ": " + products);
+        });
+
+        System.out.println("\nMost Expensive Product in Each Category:");
+        mostExpensiveProduct.forEach((category, product) -> {
+            System.out.println(category + ": " + product);
+        });
+
+        System.out.println("\nAverage Price of All Products: ₹" + avgPrice);
+    }
+}
+
+// Product class with private members, getters, and toString
+class Product {
+    private String name;
+    private String category;
+    private double price;
+
+    public Product(String name, String category, double price) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
+
+    public String getName() { return name; }
+    public String getCategory() { return category; }
+    public double getPrice() { return price; }
+
+    @Override
+    public String toString() {
+        return name + " (₹" + price + ")";
+    }
+}
