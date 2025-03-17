@@ -1,0 +1,94 @@
+import java.util.*;
+class Employee {
+    private String name;
+    private int age;
+    private double salary;
+
+    // Constructor
+    public Employee(String name, int age, double salary) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+    }
+
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    // Setters
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                '}';
+    }
+}
+
+public class EmployeeSorter {
+    public static void main(String[] args) {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee("Alice", 30, 60000));
+        employees.add(new Employee("Bob", 25, 50000));
+        employees.add(new Employee("Charlie", 35, 70000));
+        employees.add(new Employee("David", 28, 55000));
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose sorting parameter: 1- Name, 2- Age, 3- Salary");
+        int choice = scanner.nextInt();
+        System.out.println("Choose order: 1- Ascending, 2- Descending");
+        int order = scanner.nextInt();
+// Using lambda expression for sorting
+        switch (choice) {
+            case 1:
+                employees.sort((e1, e2) -> e1.getName().compareTo(e2.getName()));
+                break;
+            case 2:
+                employees.sort((e1, e2) -> Integer.compare(e1.getAge(), e2.getAge()));
+                break;
+            case 3:
+                employees.sort((e1, e2) -> Double.compare(e1.getSalary(), e2.getSalary()));
+                break;
+            default:
+                System.out.println("Invalid choice");
+                return;
+        }
+
+        // Reverse order if descending is chosen
+        if (order == 2) {
+            Collections.reverse(employees);
+        }
+        
+         System.out.println("Enter minimum salary to filter employees (Enter 0 for no filter):");
+        double minSalary = scanner.nextDouble();
+
+        // Print employees who meet the salary criteria
+        employees.stream()
+                 .filter(e -> e.getSalary() >= minSalary)
+                 .forEach(System.out::println);
+    }
+}
+
