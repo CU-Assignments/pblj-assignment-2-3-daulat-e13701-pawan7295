@@ -1,0 +1,35 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class StudentFilter {
+    public static void main(String[] args) {
+        List<Student> students = Arrays.asList(
+            new Student("Pawan", 85),
+            new Student("Aman", 72),
+            new Student("Neha", 90),
+            new Student("Rohan", 65),
+            new Student("Simran", 78)
+        );
+
+        // Filter students with marks > 75, sort by marks, and print names
+        students.stream()
+                .filter(s -> s.getMarks() > 75) // Filter students with marks > 75
+                .sorted((s1, s2) -> Integer.compare(s2.getMarks(), s1.getMarks())) // Sort by marks in descending order
+                .map(Student::getName) // Extract names
+                .forEach(System.out::println); // Print names
+    }
+}
+
+// Student class with private members and lambda-friendly methods
+class Student {
+    private String name;
+    private int marks;
+
+    public Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    public String getName() { return name; }
+    public int getMarks() { return marks; }
+}
